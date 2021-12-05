@@ -2,12 +2,13 @@ import machine
 import time
 import micropython
 from machine import *
-#import sqlite3
+import example_pub_button
 
 micropython.alloc_emergency_exception_buf(100)
 
 # Create input pin
 #onboard_led = machine.Pin(2)
+
 
 # Create output pin
 onboard_led = machine.Pin(2, machine.Pin.OUT)
@@ -22,14 +23,10 @@ def main():
         onboard_led.value(1)
         time.sleep(1)
 
-def log_hit(x):
-    # Log into database using sqlite3
-    print("Hit")
-
 # Create interrupt to read
 read_pin=4 #D2
 pir = Pin(read_pin, Pin.IN)
-pir.irq(trigger=Pin.IRQ_RISING, handler=log_hit)
+pir.irq(trigger=Pin.IRQ_RISING, handler=example_pub_button)
 
 main()
 
