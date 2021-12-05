@@ -9,7 +9,6 @@ micropython.alloc_emergency_exception_buf(100)
 # Create input pin
 #onboard_led = machine.Pin(2)
 
-
 # Create output pin
 onboard_led = machine.Pin(2, machine.Pin.OUT)
 
@@ -26,7 +25,7 @@ def main():
 # Create interrupt to read
 read_pin=4 #D2
 pir = Pin(read_pin, Pin.IN)
-pir.irq(trigger=Pin.IRQ_RISING, handler=example_pub_button)
+pir.irq(trigger=Pin.IRQ_RISING, handler=example_pub_button.main)
 
 main()
 
