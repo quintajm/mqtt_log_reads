@@ -1,9 +1,9 @@
 import urllib
-
 import machine
-#import machine import *
-import dummy_threading
+import uasyncio
 import time
+import micropython
+micropython.alloc_emergency_exception_buf(100)
 
 # Create input pin
 #onboard_led = machine.Pin(2)
@@ -11,22 +11,27 @@ import time
 # Create output pin
 onboard_led = machine.Pin(2, machine.Pin.OUT)
 
-def main():
+async def main():
     i=0
+    task = uasyncio.create_task(check_reads(1))
     while True:
-        print("Main: {1}".format(i))
-        i+=1
+        onboard_led.value(0)
         time.sleep(1)
-
-def check_reads():
-    i=0
-    while True:
-        print("Scanning: {1}".format(i))
+        print("Main:{}".format(i))
         i+=1
-        time.sleep(3)
+        onboard_led.value(1)
+        time.sleep(1)
+        await task
 
-t=dummy_threading.Thread(check_reads,args=())
-t.start()
+# Create async callback
+async def check_reads(pin,t):
+    i=1
+    while True:
+        print("Scanning: {}".format(i))
+        i+=1
+        time.sleep(t)
+
+uasyncio.run(main())
 
 if __name__ == '__main__':
     main()
