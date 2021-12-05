@@ -1,8 +1,9 @@
-import urllib
 import machine
-import uasyncio
 import time
 import micropython
+from machine import *
+#import sqlite3
+
 micropython.alloc_emergency_exception_buf(100)
 
 # Create input pin
@@ -11,9 +12,8 @@ micropython.alloc_emergency_exception_buf(100)
 # Create output pin
 onboard_led = machine.Pin(2, machine.Pin.OUT)
 
-async def main():
+def main():
     i=0
-    task = uasyncio.create_task(check_reads(1))
     while True:
         onboard_led.value(0)
         time.sleep(1)
@@ -21,17 +21,17 @@ async def main():
         i+=1
         onboard_led.value(1)
         time.sleep(1)
-        await task
 
-# Create async callback
-async def check_reads(pin,t):
-    i=1
-    while True:
-        print("Scanning: {}".format(i))
-        i+=1
-        time.sleep(t)
+def log_hit(x):
+    # Log into database using sqlite3
+    print("Hit")
 
-uasyncio.run(main())
+# Create interrupt to read
+read_pin=4 #D2
+pir = Pin(read_pin, Pin.IN)
+pir.irq(trigger=Pin.IRQ_RISING, handler=log_hit)
+
+main()
 
 if __name__ == '__main__':
     main()
