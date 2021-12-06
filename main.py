@@ -12,15 +12,20 @@ micropython.alloc_emergency_exception_buf(100)
 # Create output pin
 onboard_led = machine.Pin(2, machine.Pin.OUT)
 
+#Declare servo PWM control
+frequency = 5000
+servo = PWM(Pin(14), frequency) #D5
+
 def main():
-    i=0
+    i=1
     while True:
+        servo.duty(i)
         onboard_led.value(0)
-        time.sleep(1)
+        time.sleep(.1)
         print("Main:{}".format(i))
         i+=1
         onboard_led.value(1)
-        time.sleep(1)
+        time.sleep(.1)
 
 # Create interrupt to read
 read_pin=4 #D2

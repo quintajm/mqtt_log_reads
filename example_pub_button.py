@@ -7,7 +7,7 @@ from umqtt.simple import MQTTClient
 SERVER = "192.168.0.198"
 CLIENT_ID = ubinascii.hexlify(machine.unique_id())
 TOPIC = b"reader1"
-
+TOPIC2 = b"reader1freq"
 
 def main(server=SERVER):
 
