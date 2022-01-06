@@ -5,6 +5,7 @@ from umqtt.simple import MQTTClient
 
 
 def main(server="10.0.0.220"):
+    sleep(.1)
     c = MQTTClient("umqtt_client", server)
     c.connect()
     c.publish(b"assistant-1", b"hit")
